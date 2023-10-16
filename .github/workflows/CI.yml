@@ -12,18 +12,24 @@ env:
 
 jobs:
   test:
-    name: ${{ matrix.no-coverage }} ${{ matrix.testfile }}
+    name: ${{ matrix.no-coverage }} ${{ matrix.testfile }} flags=${{ matrix.gap-flags }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         no-coverage: ['']
         testfile: ['']
+        gap-flags: ['']
         include:
           - no-coverage: 'no-coverage'
             testfile: ''
+            gap-flags: ''
           - no-coverage: ''
             testfile: 'tst/testall.g'
+            gap-flags: ''
+          - no-coverage: 'no-coverage'
+            testfile: ''
+            gap-flags: '-A'
 
     steps:
       # the order of the checkout actions is important because all contents of
@@ -44,3 +50,4 @@ jobs:
         with:
           NO_COVERAGE: ${{ matrix.no-coverage }}
           GAP_TESTFILE: ${{ matrix.testfile }}
+          GAP_FLAGS: ${{ matrix.gap-flags }}
